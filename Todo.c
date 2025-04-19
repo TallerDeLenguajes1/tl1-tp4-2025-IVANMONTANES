@@ -25,6 +25,7 @@ Tarea crearTarea();
 Nodo * crearListaVacia();
 Nodo * crearNodo(Tarea tarea);
 void insertarNodo(Nodo ** start, Nodo * nodo);
+Nodo * quitarNodo(Nodo ** start, int idBuscado);
 int main(){
     //creamos las listas//
     Nodo * listaPendientes = crearListaVacia();
@@ -87,6 +88,9 @@ Tarea crearTarea()
             printf("LA TAREA DEBE DURAR ENTRE 10-100 MINUTOS\n");
         }
     }while(continuar);
+    //id de la tarea//
+    tarea.TareaID = id;
+    id++;
     //retornamos la tarea//
     return tarea;
 }
@@ -109,4 +113,8 @@ void insertarNodo(Nodo ** start, Nodo * nodo)
 {
     nodo->Siguiente = *start;
     *start = nodo;
+}
+
+Nodo * quitarNodo(Nodo ** start, int idBuscado){
+
 }
