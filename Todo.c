@@ -3,8 +3,11 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
-
+//constantes que se utilizan en el programa//
 #define MAX_TAMA 70
+#define NOMBRE_PENDIENTES "LISTA PENDIENTES"
+#define NOMBRE_REALIZADS "NOMBRE REALIZADAS"
+//variable para el id autoincremental de las tareas//
 int id = 1000;
 
 struct Tarea{
@@ -19,13 +22,15 @@ struct Nodo{
 }typedef Nodo;
 
 
-//crear tarea//
+//funciones con las tareas//
 Tarea crearTarea();
+void mostrarTarea(Tarea tarea);
 //operaciones de la lista//
 Nodo * crearListaVacia();
 Nodo * crearNodo(Tarea tarea);
 void insertarNodo(Nodo ** start, Nodo * nodo);
 Nodo * quitarNodo(Nodo ** start, int idBuscado);
+bool mostrarLista(Nodo * lista, char * NombreLista);
 int main(){
     //creamos las listas//
     Nodo * listaPendientes = crearListaVacia();
@@ -59,10 +64,40 @@ int main(){
         printf("OTRO PARA SALIR\n");
         fflush(stdin);
         scanf("%d",&opcion);
+        switch (opcion){
+            //variable para las funciones que requieren de pedir un id//
+            int idBuscado;
+            //variable para las funciones que requieren retornar un puntero a un nodo//
+            Nodo * nodoRetornado;
+            case 1: 
+                mostrarLista(listaPendientes,NOMBRE_PENDIENTES);
+            break;
+
+            case 2:
+                mostrarLista(listaRealizadas,NOMBRE_REALIZADS);
+            break;
+
+            case 3:
+                //muestro la lista para que se puedan ver los id//
+                bool permitirIngresoId = mostrarLista(listaPendientes,"LISTA PENDIENTES");
+                if(permitirIngresoId){
+                    printf("ingrese el id de la tarea:");
+                    fflush(stdin);
+                    scanf("%d",&idBuscado);
+                    nodoRetornado = quitarNodo(&listaPendientes,idBuscado);
+                    //si se encuentra el nodo lo agregamos a la lista de realizadas//
+                    if(nodoRetornado) insertarNodo(&listaRealizadas,nodoRetornado);
+                    else printf("No se encontro la Tarea\n\n");
+                }else{
+                    printf("no hay ninguna tarea pendiente\n\n");
+                }
+                
+            break;
+        }
     }while(seguir);
 }
 
-
+//funciones con las tarea//
 //crear tarea//
 Tarea crearTarea()
 {
@@ -95,6 +130,15 @@ Tarea crearTarea()
     return tarea;
 }
 
+void mostrarTarea(Tarea tarea)
+{   
+    printf("----------TAREA----------\n");
+    printf("ID TAREA: %d\n",tarea.TareaID);
+    printf("DURACION: %d\n",tarea.Duracion);
+    printf("DESCRIPCION: %s\n",tarea.Descripcion);
+    printf("\n");
+}
+
 //operaciones de la lista//
 Nodo * crearListaVacia()
 {
@@ -116,5 +160,33 @@ void insertarNodo(Nodo ** start, Nodo * nodo)
 }
 
 Nodo * quitarNodo(Nodo ** start, int idBuscado){
+    Nodo ** aux = start;
 
+    while (*aux && (*aux)->T.TareaID != idBuscado){
+        aux = &(*aux)->Siguiente;
+    }
+
+    if (*aux){
+        Nodo * temp = *aux;
+        *aux = (*aux)->Siguiente;
+        temp->Siguiente = NULL;
+        return temp;
+    }
+
+    return NULL;
+}
+
+bool mostrarLista(Nodo * lista, char * NombreLista)
+{
+    printf("----------%s----------\n",NombreLista);
+    if(lista){
+        while(lista){
+            mostrarTarea(lista->T);
+            lista = lista->Siguiente;
+        }
+    }else{
+        printf("LA LISTA ESTA VACIA\n\n");
+        return false;
+    }
+    return true;
 }
