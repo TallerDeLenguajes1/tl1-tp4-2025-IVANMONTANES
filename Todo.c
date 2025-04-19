@@ -49,12 +49,15 @@ int main(){
     //menu de opciones//
     do
     {  
-       printf("1: MOSTRAR TAREAS PENDIENTES\n");
-       printf("2: MOSTRAR TAREAS REALIZADAS\n");
-       printf("3: MARCAR TAREA COMO REALIZADA\n");
-       printf("4: BUSCAR TAREA POR ID\n");
-       printf("5: BUSCAR TAREA POR PALABRA CLAVE\n");
-       printf("OTRO PARA SALIR\n"); 
+        int opcion = 0;
+        printf("1: MOSTRAR TAREAS PENDIENTES\n");
+        printf("2: MOSTRAR TAREAS REALIZADAS\n");
+        printf("3: MARCAR TAREA COMO REALIZADA\n");
+        printf("4: BUSCAR TAREA POR ID\n");
+        printf("5: BUSCAR TAREA POR PALABRA CLAVE\n");
+        printf("OTRO PARA SALIR\n");
+        fflush(stdin);
+        scanf("%d",&opcion);
     }while(seguir);
 }
 
